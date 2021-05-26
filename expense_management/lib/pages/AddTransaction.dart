@@ -7,6 +7,7 @@ class AddTransaction extends StatefulWidget {
 }
 
 class _AddTransactionState extends State<AddTransaction> {
+  // Testing git and github
   String selectedGroup = 'Group A';
   String selectedType = '';
   String memo = '';
