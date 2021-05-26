@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:expense_management/pages/MainPage.dart';
 import './pages/AddTransaction.dart';
+import './pages/GroupsPage.dart';
 
 void main() {
   runApp(MyApp());
@@ -38,7 +39,7 @@ class _MyHomePageState extends State<MyHomePage> {
     var pageLists = [
       MainPage(), //Text('Home Page'),
       AddTransaction(), //Text('Add Transaction Page'),
-      Text('View Groups Page'),
+      GroupsPage(), //Text('View Groups Page'),
       Text('Settings Page'),
     ];
 
