@@ -112,6 +112,7 @@ class _AddTransactionState extends State<AddTransaction> {
             keyboardType: TextInputType.number,
             style: TextStyle(
               fontSize: 30,
+              color: selectedType == 'Credit' ? Colors.green : Colors.red,
             ),
             textAlign: TextAlign.center,
           ),
