@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:expense_management/pages/MainPage.dart';
+import './pages/AddTransaction.dart';
 
 void main() {
   runApp(MyApp());
@@ -30,15 +32,16 @@ class _MyHomePageState extends State<MyHomePage> {
   int _selectedTab = 0;
 
   // TODO: Replace with imports from these pages
-  var pageLists = [
-    Text('Home Page'),
-    Text('Add Transaction Page'),
-    Text('View Groups Page'),
-    Text('Settings Page'),
-  ];
 
   @override
   Widget build(BuildContext context) {
+    var pageLists = [
+      MainPage(), //Text('Home Page'),
+      AddTransaction(), //Text('Add Transaction Page'),
+      Text('View Groups Page'),
+      Text('Settings Page'),
+    ];
+
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
