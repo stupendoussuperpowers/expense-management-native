@@ -12,7 +12,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
+      home: MyHomePage(title: 'Expense Management'),
     );
   }
 }
@@ -27,13 +27,15 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+  int _selectedTab = 0;
 
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
+  // TODO: Replace with imports from these pages
+  var pageLists = [
+    Text('Home Page'),
+    Text('Add Transaction Page'),
+    Text('View Groups Page'),
+    Text('Settings Page'),
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -41,24 +43,42 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'You have pushed the button this many times:',
+      body: Center(child: pageLists[_selectedTab]),
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _selectedTab,
+        onTap: (value) => setState(() {
+          _selectedTab = value;
+        }),
+        items: [
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.home,
+              color: Colors.black,
             ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.add,
+              color: Colors.black,
             ),
-          ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
+            label: 'Add Transaction',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.list,
+              color: Colors.black,
+            ),
+            label: 'View Groups',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.settings,
+              color: Colors.black,
+            ),
+            label: 'Settings',
+          ),
+        ],
       ),
     );
   }
