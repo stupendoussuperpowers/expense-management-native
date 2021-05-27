@@ -3,6 +3,7 @@ import './app_color.dart';
 
 ThemeData darkTheme = ThemeData(
   brightness: Brightness.dark,
+  accentColor: AppColor.accentColorDark,
   backgroundColor: AppColor.bodyColorDark,
   scaffoldBackgroundColor: AppColor.bodyColorDark,
   hintColor: AppColor.textColor,
