@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'HomePage.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -12,7 +13,6 @@ class _LoginPageState extends State<LoginPage> {
     return Scaffold(
       body: SingleChildScrollView(
         child: Container(
-          
           width: size.width,
           height: size.height,
           padding: EdgeInsets.fromLTRB(20, 150, 20, 80),
@@ -81,7 +81,15 @@ class _LoginPageState extends State<LoginPage> {
               Column(
                 children: [
                   ElevatedButton(
-                    onPressed: () => {},
+                    onPressed: () => {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              HomePage(title: "Expense Tracker"),
+                        ),
+                      )
+                    },
                     child: Center(
                       child: Text(
                         "Login",
@@ -98,8 +106,11 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                     ),
                   ),
-                  SizedBox(height:30,),
-                  Text("Create Account", style: Theme.of(context).textTheme.bodyText1),
+                  SizedBox(
+                    height: 30,
+                  ),
+                  Text("Create Account",
+                      style: Theme.of(context).textTheme.bodyText1),
                 ],
               ),
             ],

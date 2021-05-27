@@ -10,6 +10,6 @@ void main() {
     darkTheme: AppTheme.dark,
     themeMode: ThemeMode.system,
     debugShowCheckedModeBanner: false,
-  ));
+  ),);
 }
 
