@@ -4,7 +4,7 @@ import './AddTransaction.dart';
 import './GroupsPage.dart';
 
 
-class MyApp extends StatelessWidget {
+class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -12,7 +12,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: MyHomePage(title: 'Expense Management'),
+      home: MyHomePage(title: 'Home Page'),
     );
   }
 }
