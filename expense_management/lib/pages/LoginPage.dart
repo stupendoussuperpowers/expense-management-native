@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'HomePage2.dart';
+import './HomePage.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -50,8 +50,9 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                     child: TextField(
                       decoration: InputDecoration(
-                          border: InputBorder.none,
-                          hintText: "Email or Phone Number"),
+                        border: InputBorder.none,
+                        hintText: "Email or Phone Number",
+                      ),
                     ),
                   ),
                   SizedBox(
@@ -109,8 +110,10 @@ class _LoginPageState extends State<LoginPage> {
                   SizedBox(
                     height: 30,
                   ),
-                  Text("Create Account",
-                      style: Theme.of(context).textTheme.bodyText1),
+                  Text(
+                    "Create Account",
+                    style: Theme.of(context).textTheme.bodyText1,
+                  ),
                 ],
               ),
             ],

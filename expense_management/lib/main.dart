@@ -3,12 +3,13 @@ import 'package:flutter/material.dart';
 import './pages/LoginPage.dart';
 
 void main() {
-  runApp(MaterialApp(
-    home : LoginPage(),
-    theme: AppTheme.light,
-    darkTheme: AppTheme.dark,
-    themeMode: ThemeMode.system,
-    debugShowCheckedModeBanner: false,
-  ),);
+  runApp(
+    MaterialApp(
+      home: LoginPage(),
+      theme: AppTheme.light,
+      darkTheme: AppTheme.dark,
+      themeMode: ThemeMode.light,
+      debugShowCheckedModeBanner: false,
+    ),
+  );
 }
-
