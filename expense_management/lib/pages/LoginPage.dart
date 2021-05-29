@@ -9,39 +9,51 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
+    double statusBarHeight = MediaQuery.of(context).padding.top;
     final size = MediaQuery.of(context).size;
     return Scaffold(
       body: SingleChildScrollView(
         child: Container(
           width: size.width,
           height: size.height,
-          padding: EdgeInsets.fromLTRB(20, 150, 20, 80),
+          padding: EdgeInsets.fromLTRB(20, 10+statusBarHeight, 20, 80),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  ElevatedButton(
+                    onPressed: () => {},
+                    child: Center(
+                      child: Text(
+                        "Create Account",
+                        style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                          fontWeight : FontWeight.bold
+                        ),
+                      ),
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      primary: Theme.of(context).backgroundColor,
+                      onPrimary: Theme.of(context).textTheme.headline1!.color,
+                      elevation: 0,
+                      padding: EdgeInsets.all(10),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: 30,
+              ),
               Text("Hi, \nWelcome back",
                   style: Theme.of(context).textTheme.headline1),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Image(
-                        image: AssetImage('assets/icons/facebook.png'),
-                        width: 40,
-                      ),
-                      SizedBox(width: 40),
-                      Image(
-                        image: AssetImage('assets/icons/google.png'),
-                        width: 40,
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 50,
-                  ),
                   Container(
                     padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
                     decoration: BoxDecoration(
@@ -93,8 +105,9 @@ class _LoginPageState extends State<LoginPage> {
                     child: Center(
                       child: Text(
                         "Login",
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
+                        style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                          fontWeight : FontWeight.bold,
+                          color: Theme.of(context).backgroundColor,
                         ),
                       ),
                     ),
@@ -106,11 +119,29 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                     ),
                   ),
-                  SizedBox(
-                    height: 30,
+                ],
+              ),
+              Row(children: <Widget>[
+                Expanded(
+                  child: Divider(),
+                ),
+                Text("    Or continue with    ", style:Theme.of(context).textTheme.bodyText1),
+                Expanded(
+                  child: Divider(),
+                ),
+              ]),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Image(
+                    image: AssetImage('assets/icons/facebook.png'),
+                    width: 50,
                   ),
-                  Text("Create Account",
-                      style: Theme.of(context).textTheme.bodyText1),
+                  SizedBox(width: 40),
+                  Image(
+                    image: AssetImage('assets/icons/google.png'),
+                    width: 50,
+                  ),
                 ],
               ),
             ],

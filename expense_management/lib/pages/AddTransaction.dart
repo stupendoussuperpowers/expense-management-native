@@ -161,9 +161,7 @@ class _AddTransactionState extends State<AddTransaction> {
           ),
         ),
         ElevatedButton(
-          style: ButtonStyle(
-            elevation: MaterialStateProperty.all(0),
-          ),
+          style: Theme.of(context).elevatedButtonTheme.style,
           onPressed: () => {},
           child: Text(
             'Add Transaction',
