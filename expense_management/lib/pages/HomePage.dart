@@ -3,7 +3,6 @@ import 'package:expense_management/pages/MainPage.dart';
 import './AddTransaction.dart';
 import './GroupsPage.dart';
 
-
 class HomePage extends StatefulWidget {
   HomePage({Key? key, required this.title}) : super(key: key);
 
@@ -15,8 +14,6 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   int _selectedTab = 0;
-
-  // TODO: Replace with imports from these pages
 
   @override
   Widget build(BuildContext context) {

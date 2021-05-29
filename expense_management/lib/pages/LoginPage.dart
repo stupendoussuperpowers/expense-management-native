@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'HomePage2.dart';
+import './HomePage.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -62,8 +62,9 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                     child: TextField(
                       decoration: InputDecoration(
-                          border: InputBorder.none,
-                          hintText: "Email or Phone Number"),
+                        border: InputBorder.none,
+                        hintText: "Email or Phone Number",
+                      ),
                     ),
                   ),
                   SizedBox(
