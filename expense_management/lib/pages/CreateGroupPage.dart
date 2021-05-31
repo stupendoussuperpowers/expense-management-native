@@ -1,3 +1,4 @@
+import 'package:expense_management/pages/ResultPage.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -34,27 +35,61 @@ class _CreateGroupPageState extends State<CreateGroupPage> {
       appBar: AppBar(
         title: Text('Create a new group'),
       ),
-      body: Column(
-        children: [
-          TextField(
-            decoration: InputDecoration(hintText: 'Enter Group Name'),
-            onChanged: (value) {
-              setState(() {
-                groupName = value;
-              });
-            },
-          ),
-          TextField(
-            decoration: InputDecoration(hintText: 'Group Description'),
-          ),
-          ElevatedButton(
-            onPressed: () async {
-              var b = await createGroup();
-              print(b["body"]);
-            },
-            child: Text('Create Group'),
-          ),
-        ],
+      body: Padding(
+        padding: const EdgeInsets.all(10.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+              decoration: BoxDecoration(
+                color: Theme.of(context).primaryColorLight,
+                borderRadius: BorderRadius.all(Radius.circular(20)),
+              ),
+              child: TextField(
+                decoration: InputDecoration(
+                  border: InputBorder.none,
+                  hintText: "Group Name",
+                ),
+                onChanged: (value) {
+                  setState(() {
+                    groupName = value;
+                  });
+                },
+              ),
+            ),
+            Container(
+              margin: EdgeInsets.fromLTRB(0, 8, 0, 8),
+              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+              decoration: BoxDecoration(
+                color: Theme.of(context).primaryColorLight,
+                borderRadius: BorderRadius.all(Radius.circular(20)),
+              ),
+              child: TextField(
+                decoration: InputDecoration(
+                  border: InputBorder.none,
+                  hintText: "Group Description",
+                ),
+              ),
+            ),
+            ElevatedButton(
+              onPressed: () async {
+                var b = await createGroup();
+                print(b["body"]);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ResultPage(
+                      success: b["success"],
+                      message: b["body"],
+                    ),
+                  ),
+                );
+              },
+              child: Text('Create Group'),
+            ),
+          ],
+        ),
       ),
     );
   }

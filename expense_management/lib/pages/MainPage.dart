@@ -21,10 +21,24 @@ class _MainPageState extends State<MainPage> {
         width: 150,
         height: 150,
         child: Card(
+          color: Colors.blue,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
-            children: [Icon(icon, size: 40), Text(title)],
+            children: [
+              Icon(
+                icon,
+                size: 40,
+                color: Colors.white,
+              ),
+              Text(
+                title,
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 18,
+                ),
+              ),
+            ],
           ),
         ),
       ),

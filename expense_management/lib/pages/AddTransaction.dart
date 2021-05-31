@@ -23,10 +23,11 @@ class Group {
 
 class _AddTransactionState extends State<AddTransaction> {
   // Testing git and github
-  String selectedGroup = '';
-  String selectedType = '';
+  String selectedGroup = 'select';
+  String selectedType = 'Credit';
   String memo = '';
   int amount = 0;
+  bool recurring = false;
   List<Group> groups = [];
 
   _AddTransactionState() {
@@ -84,16 +85,54 @@ class _AddTransactionState extends State<AddTransaction> {
           'Type',
           style: TextStyle(
             fontSize: 18,
+            color: Colors.white,
           ),
         ),
-        Radio(
-          value: 'Credit',
-          groupValue: selectedType,
-          onChanged: (value) => setState(
-            () {
-              selectedType = value.toString();
-            },
-          ),
+        Row(
+          children: [
+            Row(
+              children: [
+                Radio(
+                  activeColor: Colors.white,
+                  value: 'Credit',
+                  groupValue: selectedType,
+                  onChanged: (value) => setState(
+                    () {
+                      selectedType = value.toString();
+                    },
+                  ),
+                ),
+                Text(
+                  'Credit',
+                  style: TextStyle(
+                    fontSize: 18,
+                    color: Colors.white,
+                  ),
+                )
+              ],
+            ),
+            Row(
+              children: [
+                Radio(
+                  activeColor: Colors.white,
+                  value: 'Debit',
+                  groupValue: selectedType,
+                  onChanged: (value) => setState(
+                    () {
+                      selectedType = value.toString();
+                    },
+                  ),
+                ),
+                Text(
+                  'Debit',
+                  style: TextStyle(
+                    fontSize: 18,
+                    color: Colors.white,
+                  ),
+                )
+              ],
+            )
+          ],
         ),
         Text('Credit'),
         Radio(
@@ -111,6 +150,23 @@ class _AddTransactionState extends State<AddTransaction> {
   }
 
   Widget selectGroup() {
+    var items = groups.map<DropdownMenuItem<String>>((x) {
+      return DropdownMenuItem<String>(
+        child: Text(
+          '${x.groupName}',
+          style: TextStyle(),
+        ),
+        value: '${x.groupID}',
+      );
+    }).toList();
+
+    items.add(
+      DropdownMenuItem<String>(
+        child: Text('Select'),
+        value: 'select',
+      ),
+    );
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -118,19 +174,16 @@ class _AddTransactionState extends State<AddTransaction> {
           'Select Group',
           style: TextStyle(
             fontSize: 18,
+            color: Colors.white,
           ),
         ),
         DropdownButton<String>(
-          //  value: selectedGroup != '' ? selectedGroup : groupList[0].groupID,
+          value: selectedGroup,
+          focusColor: Colors.white,
           onChanged: (value) => setState(() {
             selectedGroup = value.toString();
           }),
-          items: groups.map<DropdownMenuItem<String>>((x) {
-            return DropdownMenuItem<String>(
-              child: Text('${x.groupName}'),
-              value: '${x.groupID}',
-            );
-          }).toList(),
+          items: items,
         ),
       ],
     );
@@ -138,8 +191,15 @@ class _AddTransactionState extends State<AddTransaction> {
 
   Widget addMemo() {
     return TextField(
+      cursorColor: Colors.black,
+      style: TextStyle(
+        color: Colors.white,
+      ),
       decoration: InputDecoration(
         hintText: 'Add Memo',
+        hintStyle: TextStyle(
+          color: Colors.white,
+        ),
       ),
       onChanged: (value) => setState(() {
         memo = value;
@@ -152,21 +212,30 @@ class _AddTransactionState extends State<AddTransaction> {
       children: [
         Text(
           'Enter Amount',
-          style: TextStyle(
-            fontSize: 20,
-          ),
+          style: TextStyle(fontSize: 20, color: Colors.white),
         ),
         Container(
           width: 200,
           child: TextField(
-            decoration: InputDecoration(prefix: Text('Rs.')),
+            decoration: InputDecoration(
+              prefix: Text(
+                'Rs.',
+                style:
+                    TextStyle(color: Colors.white, fontWeight: FontWeight.w400),
+              ),
+              hintText: '0',
+              hintStyle: TextStyle(
+                color: Colors.white,
+              ),
+            ),
             onChanged: (value) => setState(() {
               amount = int.parse(value);
             }),
             keyboardType: TextInputType.number,
             style: TextStyle(
               fontSize: 30,
-              color: selectedType == 'Credit' ? Colors.green : Colors.red,
+              color:
+                  selectedType == 'Credit' ? Colors.greenAccent : Colors.amber,
             ),
             textAlign: TextAlign.center,
           ),
@@ -175,34 +244,22 @@ class _AddTransactionState extends State<AddTransaction> {
     );
   }
 
-  Widget addProof() {
+  Widget recurringBox() {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Text(
-          'Attach Receipt',
+          'Recurring?',
           style: TextStyle(
-            fontSize: 20,
+            color: Colors.white,
           ),
         ),
-        IconButton(
-          iconSize: 30,
-          onPressed: () async {
-            WidgetsFlutterBinding.ensureInitialized();
-            final cameras = await availableCameras();
-            final firstCamera = cameras.first;
-            Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (context) => TakePicture(
-                  camera: firstCamera,
-                  memo: memo,
-                  amount: amount,
-                  group: selectedGroup,
-                ),
-              ),
-            );
+        Checkbox(
+          value: recurring,
+          onChanged: (value) {
+            setState(() {
+              recurring = !recurring;
+            });
           },
-          icon: Icon(Icons.image),
         ),
       ],
     );
@@ -210,57 +267,65 @@ class _AddTransactionState extends State<AddTransaction> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.fromLTRB(20, 50, 20, 80),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          Container(
-            padding: EdgeInsets.all(30),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                addAmount(),
-                selectGroup(),
-                selectType(),
-                addMemo(),
-                // addProof(),
-              ],
-            ),
-          ),
-          ElevatedButton(
-            onPressed: () async {
-              WidgetsFlutterBinding.ensureInitialized();
-              final cameras = await availableCameras();
-              final firstCamera = cameras.first;
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => TakePicture(
-                    camera: firstCamera,
-                    memo: memo,
-                    amount: amount,
-                    group: selectedGroup,
-                  ),
-                ),
-              );
-            },
-            child: Text(
-              "Add Proof",
-              style: Theme.of(context).textTheme.bodyText1!.copyWith(
-                    fontWeight: FontWeight.bold,
-                    color: Theme.of(context).backgroundColor,
-                  ),
-            ),
-            style: ElevatedButton.styleFrom(
-              elevation: 5,
-              padding: EdgeInsets.fromLTRB(30, 20, 30, 20),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20),
+    return Card(
+      color: Colors.lightBlue,
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              padding: EdgeInsets.all(30),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  addAmount(),
+                  selectGroup(),
+                  selectType(),
+                  recurringBox(),
+                  addMemo(),
+                ],
               ),
             ),
-          ),
-        ],
+            ElevatedButton(
+              style: ButtonStyle(
+                elevation: MaterialStateProperty.all(0),
+              ),
+              onPressed: () async {
+                WidgetsFlutterBinding.ensureInitialized();
+                final cameras = await availableCameras();
+                final firstCamera = cameras.first;
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => TakePicture(
+                      camera: firstCamera,
+                      memo: memo,
+                      amount: amount * (selectedType == 'Credit' ? 1 : -1),
+                      group: selectedGroup,
+                      recurring: recurring,
+                    ),
+                  ),
+                );
+              },
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text(
+                    'Next',
+                    style: TextStyle(
+                      fontSize: 20,
+                    ),
+                  ),
+                  Icon(Icons.arrow_right_alt),
+                ],
+              ),
+            )
+          ],
+        ),
       ),
     );
   }

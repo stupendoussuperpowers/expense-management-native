@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:expense_management/pages/ResultPage.dart';
 import 'package:flutter/material.dart';
 import 'dart:io';
 import 'package:dio/dio.dart';
@@ -9,15 +10,17 @@ class ConfirmScreen extends StatelessWidget {
   final amount;
   final memo;
   final group;
+  final recurring;
 
   ConfirmScreen({
     required this.imagePath,
     required this.amount,
     required this.group,
     required this.memo,
+    required this.recurring,
   });
 
-  Future<void> addTransaction() async {
+  Future<dynamic> addTransaction() async {
     try {
       var a = {
         "image": await MultipartFile.fromFile(imagePath), //File(imagePath),
@@ -25,6 +28,7 @@ class ConfirmScreen extends StatelessWidget {
         "memo": this.memo,
         "amount": this.amount,
         "user": "f9Lta3B8BniVB9zSP1iuG4",
+        "recurring": recurring,
       };
 
       var resp = await Dio().post(
@@ -32,8 +36,10 @@ class ConfirmScreen extends StatelessWidget {
         data: FormData.fromMap(a),
       );
       print(resp.data);
+      return resp.data;
     } catch (e) {
       print(e);
+      return e;
     }
   }
 
@@ -73,16 +79,67 @@ class ConfirmScreen extends StatelessWidget {
     );
   }
 
-  Widget proofDetails() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      //   mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Text('Receipt'),
-        Image.file(
-          File(imagePath),
+  Widget priceCard(int net) {
+    return SizedBox(
+      width: 300,
+      child: Padding(
+        padding: const EdgeInsets.all(10.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Transaction Amount',
+              style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.w300,
+              ),
+            ),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text(
+                  '$net',
+                  style: TextStyle(
+                    fontSize: 40,
+                    color: net >= 0 ? Colors.greenAccent : Colors.amber,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                Text(
+                  ' INR',
+                  style: TextStyle(
+                    fontSize: 30,
+                    color: Colors.white,
+                    fontWeight: FontWeight.w300,
+                  ),
+                ),
+              ],
+            )
+          ],
         ),
-      ],
+      ),
+    );
+  }
+
+  Widget infoCard(String heading, Widget body) {
+    return SizedBox(
+      width: 350,
+      child: Padding(
+        padding: const EdgeInsets.all(10.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              '$heading',
+              style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.w300,
+              ),
+            ),
+            body,
+          ],
+        ),
+      ),
     );
   }
 
@@ -92,21 +149,56 @@ class ConfirmScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text('Confirm Page'),
       ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          netCost(amount),
-          memoDetails(memo),
-          proofDetails(),
-          ElevatedButton(
-            onPressed: () async {
-              var a = await addTransaction();
-              // print(a);
-            },
-            child: Text('Confirm Transaction'),
-          )
-        ],
+      body: Center(
+        child: Card(
+          color: Colors.blue,
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                priceCard(amount),
+                infoCard(
+                  'Memo',
+                  Text(
+                    '$memo',
+                    style: TextStyle(
+                      fontSize: 30,
+                      color: Colors.white,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+                infoCard(
+                  'Receipt',
+                  Image.file(
+                    File(imagePath),
+                    height: 200,
+                    width: 200,
+                  ),
+                ),
+                ElevatedButton(
+                  onPressed: () async {
+                    var a = await addTransaction();
+                    // print(a);
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ResultPage(
+                          success: a["success"],
+                          message: a["body"],
+                        ),
+                      ),
+                    );
+                  },
+                  child: Text('Confirm Transaction'),
+                )
+              ],
+            ),
+          ),
+        ),
       ),
     );
   }

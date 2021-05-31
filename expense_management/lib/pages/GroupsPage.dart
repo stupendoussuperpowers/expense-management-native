@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:ui';
 
 import 'package:expense_management/pages/GroupNetPage.dart';
 import 'package:flutter/material.dart';
@@ -53,9 +54,16 @@ class GroupsPage extends StatelessWidget {
                       ),
                     );
                   },
-                  leading: Icon(Icons.group),
-                  title: Text("${snapshot.data?[index].groupName}"),
-                  //subtitle: Text('Net: Rs. 1,430'),
+                  leading: Icon(
+                    Icons.label_rounded,
+                    color: Colors.black,
+                  ),
+                  title: Text(
+                    "${snapshot.data?[index].groupName}",
+                    style: TextStyle(
+                      fontSize: 18,
+                    ),
+                  ),
                 );
               },
             );

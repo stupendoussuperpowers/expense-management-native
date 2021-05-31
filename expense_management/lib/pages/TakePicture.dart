@@ -1,18 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
 import 'ConfirmScreen.dart';
+import 'package:image_picker/image_picker.dart';
 
 class TakePicture extends StatefulWidget {
   final CameraDescription camera;
   final amount;
   final memo;
   final group;
+  final recurring;
 
-  const TakePicture(
-      {required this.camera,
-      required this.amount,
-      required this.memo,
-      required this.group});
+  const TakePicture({
+    required this.camera,
+    required this.amount,
+    required this.memo,
+    required this.group,
+    required this.recurring,
+  });
 
   @override
   TakePictureState createState() => TakePictureState();
@@ -29,7 +33,7 @@ class TakePictureState extends State<TakePicture> {
       widget.camera,
       ResolutionPreset.medium,
     );
-
+    print("Hello -> ${widget.amount}");
     _initializeController = _controller.initialize();
   }
 
@@ -42,6 +46,31 @@ class TakePictureState extends State<TakePicture> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        actions: [
+          IconButton(
+            onPressed: () async {
+              final picker = ImagePicker();
+              final pickedFile =
+                  await picker.getImage(source: ImageSource.gallery);
+              if (pickedFile != null) {
+                await Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => ConfirmScreen(
+                      imagePath: pickedFile.path,
+                      memo: widget.memo,
+                      amount: widget.amount,
+                      group: widget.group,
+                      recurring: widget.recurring,
+                    ),
+                  ),
+                );
+              }
+            },
+            icon: Icon(Icons.camera_roll),
+          ),
+        ],
+      ),
       body: FutureBuilder<void>(
         future: _initializeController,
         builder: (context, snapshot) {
@@ -52,7 +81,8 @@ class TakePictureState extends State<TakePicture> {
           }
         },
       ),
-      floatingActionButton: FloatingActionButton(
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButton: FloatingActionButton.extended(
         onPressed: () async {
           try {
             await _initializeController;
@@ -65,6 +95,7 @@ class TakePictureState extends State<TakePicture> {
                   memo: widget.memo,
                   amount: widget.amount,
                   group: widget.group,
+                  recurring: widget.recurring,
                 ),
               ),
             );
@@ -72,7 +103,7 @@ class TakePictureState extends State<TakePicture> {
             print(e);
           }
         },
-        child: const Icon(Icons.camera_alt),
+        label: const Icon(Icons.camera_alt),
       ),
     );
   }

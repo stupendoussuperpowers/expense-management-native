@@ -1,11 +1,8 @@
-import 'package:expense_management/notification_service.dart';
 import 'package:flutter/material.dart';
 import 'package:expense_management/pages/MainPage.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import './AddTransaction.dart';
 import './GroupsPage.dart';
-import 'package:web_socket_channel/web_socket_channel.dart';
-import 'package:web_socket_channel/status.dart' as status;
 
 class HomePage extends StatefulWidget {
   HomePage({Key? key, required this.title}) : super(key: key);
@@ -37,45 +34,27 @@ class _HomePageState extends State<HomePage> {
         appBar: AppBar(
           title: Text(widget.title),
           leading: Container(),
-          actions: [
-            GestureDetector(
-              child: Icon(Icons.notifications),
-              onTap: () async {
-                var f = NotificationService();
-                await f.init();
-                f.showNotification('Test', 'Added 12 INR');
-              },
-            )
-          ],
         ),
         body: Center(child: pageLists[_selectedTab]),
-        bottomNavigationBar: BottomNavigationBar(
-          currentIndex: _selectedTab,
+        bottomNavigationBar: CurvedNavigationBar(
+          index: _selectedTab,
+          height: 50.0,
+          color: Theme.of(context).primaryColorLight,
+          backgroundColor: Theme.of(context).backgroundColor,
+          buttonBackgroundColor: Theme.of(context).accentColor,
+          animationCurve: Curves.fastLinearToSlowEaseIn,
+          animationDuration: Duration(milliseconds: 800),
           onTap: (value) => setState(() {
             _selectedTab = value;
           }),
-          items: [
-            BottomNavigationBarItem(
-              icon: Icon(
-                Icons.home,
-                color: Colors.black,
-              ),
-              label: 'Home',
+          items: <Widget>[
+            Icon(
+              Icons.home,
+              size: 30,
+              semanticLabel: "Home",
             ),
-            BottomNavigationBarItem(
-              icon: Icon(
-                Icons.add,
-                color: Colors.black,
-              ),
-              label: 'Add Transaction',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(
-                Icons.list,
-                color: Colors.black,
-              ),
-              label: 'View Groups',
-            ),
+            Icon(Icons.add, size: 30),
+            Icon(Icons.list, size: 30),
           ],
         ),
       ),
