@@ -236,7 +236,7 @@ class _AddTransactionState extends State<AddTransaction> {
             }),
             keyboardType: TextInputType.number,
             style: TextStyle(
-              fontSize: 30,
+              fontSize: 25,
               color:
                   selectedType == 'Credit' ? Colors.greenAccent : Colors.amber,
             ),
@@ -291,21 +291,9 @@ class _AddTransactionState extends State<AddTransaction> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         addMemo(),
-                        SizedBox(
-                          height: 10,
-                        ),
                         addAmount(),
-                        SizedBox(
-                          height: 10,
-                        ),
                         recurringBox(),
-                        SizedBox(
-                          height: 20,
-                        ),
                         selectType(),
-                        SizedBox(
-                          height: 10,
-                        ),
                         selectGroup(),
                       ],
                     ),

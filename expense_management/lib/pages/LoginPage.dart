@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'HomePage.dart';
 
 class LoginPage extends StatefulWidget {
@@ -7,6 +8,7 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  String enteredEmail = "admin@admin.com", enteredPassword = "admin123";
   @override
   Widget build(BuildContext context) {
     double statusBarHeight = MediaQuery.of(context).padding.top;
@@ -16,7 +18,7 @@ class _LoginPageState extends State<LoginPage> {
         child: Container(
           width: size.width,
           height: size.height,
-          padding: EdgeInsets.fromLTRB(20, 10+statusBarHeight, 20, 80),
+          padding: EdgeInsets.fromLTRB(20, 10 + statusBarHeight, 20, 80),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -29,9 +31,10 @@ class _LoginPageState extends State<LoginPage> {
                     child: Center(
                       child: Text(
                         "Create Account",
-                        style: Theme.of(context).textTheme.bodyText1!.copyWith(
-                          fontWeight : FontWeight.bold
-                        ),
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodyText1!
+                            .copyWith(fontWeight: FontWeight.bold),
                       ),
                     ),
                     style: ElevatedButton.styleFrom(
@@ -61,6 +64,7 @@ class _LoginPageState extends State<LoginPage> {
                       borderRadius: BorderRadius.all(Radius.circular(20)),
                     ),
                     child: TextField(
+                      onChanged: (value) => {enteredEmail = value},
                       decoration: InputDecoration(
                         border: InputBorder.none,
                         hintText: "Email or Phone Number",
@@ -77,6 +81,7 @@ class _LoginPageState extends State<LoginPage> {
                       borderRadius: BorderRadius.all(Radius.circular(20)),
                     ),
                     child: TextField(
+                      onChanged: (value) => {enteredPassword = value},
                       obscureText: true,
                       decoration: InputDecoration(
                         border: InputBorder.none,
@@ -95,21 +100,35 @@ class _LoginPageState extends State<LoginPage> {
                 children: [
                   ElevatedButton(
                     onPressed: () => {
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) =>
-                              HomePage(title: "Expense Tracker"),
-                        ),
-                      )
+                      if (enteredEmail == "admin@admin.com" &&
+                          enteredPassword == "admin123")
+                        {
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  HomePage(title: "Expense Tracker"),
+                            ),
+                          )
+                        }
+                      else
+                        {
+                          Fluttertoast.showToast(
+                              msg: 'Invalid Credentials',
+                              toastLength: Toast.LENGTH_SHORT,
+                              gravity: ToastGravity.BOTTOM,
+                              timeInSecForIos: 1,
+                              backgroundColor: Colors.red,
+                              textColor: Colors.white)
+                        }
                     },
                     child: Center(
                       child: Text(
                         "Login",
                         style: Theme.of(context).textTheme.bodyText1!.copyWith(
-                          fontWeight : FontWeight.bold,
-                          color: Theme.of(context).backgroundColor,
-                        ),
+                              fontWeight: FontWeight.bold,
+                              color: Theme.of(context).backgroundColor,
+                            ),
                       ),
                     ),
                     style: ElevatedButton.styleFrom(
@@ -126,7 +145,8 @@ class _LoginPageState extends State<LoginPage> {
                 Expanded(
                   child: Divider(),
                 ),
-                Text("    Or continue with    ", style:Theme.of(context).textTheme.bodyText1),
+                Text("    Or continue with    ",
+                    style: Theme.of(context).textTheme.bodyText1),
                 Expanded(
                   child: Divider(),
                 ),
