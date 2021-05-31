@@ -33,7 +33,6 @@ class _HomePageState extends State<HomePage> {
       child: Scaffold(
         appBar: AppBar(
           title: Text(widget.title),
-          leading: Container(),
         ),
         body: Center(child: pageLists[_selectedTab]),
         bottomNavigationBar: CurvedNavigationBar(

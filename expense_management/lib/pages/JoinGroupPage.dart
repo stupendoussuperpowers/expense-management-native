@@ -33,7 +33,7 @@ class _JoinGroupPageState extends State<JoinGroupPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Create a new group'),
+        title: Text('Join group'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(10.0),
@@ -57,6 +57,9 @@ class _JoinGroupPageState extends State<JoinGroupPage> {
                   });
                 },
               ),
+            ),
+            SizedBox(
+              height :30,
             ),
             ElevatedButton(
               onPressed: () async {

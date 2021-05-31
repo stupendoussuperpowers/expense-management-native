@@ -131,20 +131,9 @@ class _AddTransactionState extends State<AddTransaction> {
                   ),
                 )
               ],
-            )
+            ),
           ],
-        ),
-        Text('Credit'),
-        Radio(
-          value: 'Debit',
-          groupValue: selectedType,
-          onChanged: (value) => setState(
-            () {
-              selectedType = value.toString();
-            },
-          ),
-        ),
-        Text('Debit')
+        )
       ],
     );
   }
@@ -190,40 +179,54 @@ class _AddTransactionState extends State<AddTransaction> {
   }
 
   Widget addMemo() {
-    return TextField(
-      cursorColor: Colors.black,
-      style: TextStyle(
-        color: Colors.white,
-      ),
-      decoration: InputDecoration(
-        hintText: 'Add Memo',
-        hintStyle: TextStyle(
+    return Container(
+      decoration: BoxDecoration(
+              border: Border.all(
+                  width: 2, style: BorderStyle.solid, color: Colors.black12)),
+      child: TextField(
+        cursorColor: Colors.black,
+        textAlign: TextAlign.center,
+        style: TextStyle(
           color: Colors.white,
+          fontSize: 25,
         ),
+        decoration: InputDecoration(
+          hintText: 'Add Description',
+          hintStyle: TextStyle(
+            color: Colors.white,
+            fontSize: 25,
+          ),
+        ),
+        onChanged: (value) => setState(() {
+          memo = value;
+        }),
       ),
-      onChanged: (value) => setState(() {
-        memo = value;
-      }),
     );
   }
 
   Widget addAmount() {
-    return Column(
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Text(
           'Enter Amount',
-          style: TextStyle(fontSize: 20, color: Colors.white),
+          style: TextStyle(fontSize: 18, color: Colors.white),
         ),
         Container(
-          width: 200,
+          width: 150,
+          
           child: TextField(
+            cursorColor: Colors.white,
+            showCursor: true,
             decoration: InputDecoration(
               prefix: Text(
-                'Rs.',
-                style:
-                    TextStyle(color: Colors.white, fontWeight: FontWeight.w400),
+                '₹.',
+                style: TextStyle(
+                    color: selectedType == 'Credit'
+                        ? Colors.greenAccent
+                        : Colors.amber,
+                    fontWeight: FontWeight.w400),
               ),
-              hintText: '0',
               hintStyle: TextStyle(
                 color: Colors.white,
               ),
@@ -251,6 +254,7 @@ class _AddTransactionState extends State<AddTransaction> {
           'Recurring?',
           style: TextStyle(
             color: Colors.white,
+            fontSize: 18,
           ),
         ),
         Checkbox(
@@ -267,65 +271,77 @@ class _AddTransactionState extends State<AddTransaction> {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      color: Colors.lightBlue,
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Container(
-              padding: EdgeInsets.all(30),
+    return Container(
+      margin: EdgeInsets.all(10),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: [
+          Card(
+            color: Colors.blue[500],
+            child: Padding(
+              padding: const EdgeInsets.all(1.0),
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                mainAxisSize: MainAxisSize.min,
                 children: [
-                  addAmount(),
-                  selectGroup(),
-                  selectType(),
-                  recurringBox(),
-                  addMemo(),
+                  Container(
+                    padding: EdgeInsets.all(30),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        addMemo(),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        addAmount(),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        recurringBox(),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        selectType(),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        selectGroup(),
+                      ],
+                    ),
+                  ),
                 ],
               ),
             ),
-            ElevatedButton(
-              style: ButtonStyle(
-                elevation: MaterialStateProperty.all(0),
-              ),
-              onPressed: () async {
-                WidgetsFlutterBinding.ensureInitialized();
-                final cameras = await availableCameras();
-                final firstCamera = cameras.first;
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => TakePicture(
-                      camera: firstCamera,
-                      memo: memo,
-                      amount: amount * (selectedType == 'Credit' ? 1 : -1),
-                      group: selectedGroup,
-                      recurring: recurring,
-                    ),
+          ),
+          ElevatedButton(
+            onPressed: () async {
+              WidgetsFlutterBinding.ensureInitialized();
+              final cameras = await availableCameras();
+              final firstCamera = cameras.first;
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => TakePicture(
+                    camera: firstCamera,
+                    memo: memo,
+                    amount: amount * (selectedType == 'Credit' ? 1 : -1),
+                    group: selectedGroup,
+                    recurring: recurring,
                   ),
-                );
-              },
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Text(
-                    'Next',
-                    style: TextStyle(
-                      fontSize: 20,
-                    ),
-                  ),
-                  Icon(Icons.arrow_right_alt),
-                ],
-              ),
-            )
-          ],
-        ),
+                ),
+              );
+            },
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  'Next',
+                ),
+                Icon(Icons.arrow_right_alt),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }

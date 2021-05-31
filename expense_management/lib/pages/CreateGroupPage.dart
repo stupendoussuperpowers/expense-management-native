@@ -72,6 +72,7 @@ class _CreateGroupPageState extends State<CreateGroupPage> {
                 ),
               ),
             ),
+            
             ElevatedButton(
               onPressed: () async {
                 var b = await createGroup();

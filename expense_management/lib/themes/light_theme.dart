@@ -20,6 +20,11 @@ ThemeData lightTheme = ThemeData(
     style: ElevatedButton.styleFrom(
       primary: Colors.black,
       onPrimary: Colors.white,
+      elevation: 5,
+      padding: EdgeInsets.all(20),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(20),
+      ),
     ),
   ),
 );
