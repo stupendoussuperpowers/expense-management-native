@@ -7,6 +7,7 @@ ThemeData lightTheme = ThemeData(
   backgroundColor: AppColor.bodyColor,
   scaffoldBackgroundColor: AppColor.bodyColor,
   hintColor: AppColor.textColor,
+  primaryColor: AppColor.bodyColor,
   primaryColorLight: AppColor.buttonBackgroundColor,
   textTheme: TextTheme(
     headline1: TextStyle(

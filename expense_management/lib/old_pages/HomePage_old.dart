@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:expense_management/pages/MainPage.dart';
-import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import './AddTransaction.dart';
 import './GroupsPage.dart';
 
@@ -16,8 +15,6 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   int _selectedTab = 0;
 
-  // TODO: Replace with imports from these pages
-
   @override
   Widget build(BuildContext context) {
     var pageLists = [
@@ -32,22 +29,40 @@ class _HomePageState extends State<HomePage> {
         title: Text(widget.title),
       ),
       body: Center(child: pageLists[_selectedTab]),
-      bottomNavigationBar: CurvedNavigationBar(
-        index: _selectedTab,
-        height: 50.0,
-        color: Theme.of(context).primaryColorLight,
-        backgroundColor: Theme.of(context).backgroundColor,
-        buttonBackgroundColor: Theme.of(context).accentColor,
-        animationCurve: Curves.fastLinearToSlowEaseIn,
-        animationDuration: Duration(milliseconds: 800),
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _selectedTab,
         onTap: (value) => setState(() {
           _selectedTab = value;
         }),
-        items: <Widget>[
-          Icon(Icons.home, size: 30, semanticLabel: "Home",),
-          Icon(Icons.add, size: 30),
-          Icon(Icons.list, size: 30),
-          Icon(Icons.settings, size: 30),
+        items: [
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.home,
+              color: Colors.black,
+            ),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.add,
+              color: Colors.black,
+            ),
+            label: 'Add Transaction',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.list,
+              color: Colors.black,
+            ),
+            label: 'View Groups',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.settings,
+              color: Colors.black,
+            ),
+            label: 'Settings',
+          ),
         ],
       ),
     );

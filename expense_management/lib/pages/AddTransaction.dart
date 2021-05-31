@@ -86,38 +86,26 @@ class _AddTransactionState extends State<AddTransaction> {
             fontSize: 18,
           ),
         ),
-        Row(
-          children: [
-            Row(
-              children: [
-                Radio(
-                  value: 'Credit',
-                  groupValue: selectedType,
-                  onChanged: (value) => setState(
-                    () {
-                      selectedType = value.toString();
-                    },
-                  ),
-                ),
-                Text('Credit')
-              ],
-            ),
-            Row(
-              children: [
-                Radio(
-                  value: 'Debit',
-                  groupValue: selectedType,
-                  onChanged: (value) => setState(
-                    () {
-                      selectedType = value.toString();
-                    },
-                  ),
-                ),
-                Text('Debit')
-              ],
-            )
-          ],
+        Radio(
+          value: 'Credit',
+          groupValue: selectedType,
+          onChanged: (value) => setState(
+            () {
+              selectedType = value.toString();
+            },
+          ),
         ),
+        Text('Credit'),
+        Radio(
+          value: 'Debit',
+          groupValue: selectedType,
+          onChanged: (value) => setState(
+            () {
+              selectedType = value.toString();
+            },
+          ),
+        ),
+        Text('Debit')
       ],
     );
   }
@@ -222,50 +210,58 @@ class _AddTransactionState extends State<AddTransaction> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceAround,
-      children: [
-        Container(
-          padding: EdgeInsets.all(30),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              addAmount(),
-              selectGroup(),
-              selectType(),
-              addMemo(),
-              //  addProof(),
-            ],
-          ),
-        ),
-        ElevatedButton(
-          style: ButtonStyle(
-            elevation: MaterialStateProperty.all(0),
-          ),
-          onPressed: () async {
-            WidgetsFlutterBinding.ensureInitialized();
-            final cameras = await availableCameras();
-            final firstCamera = cameras.first;
-            Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (context) => TakePicture(
-                  camera: firstCamera,
-                  memo: memo,
-                  amount: amount,
-                  group: selectedGroup,
-                ),
-              ),
-            );
-          },
-          child: Text(
-            'Add Proof',
-            style: TextStyle(
-              fontSize: 20,
+    return Container(
+      padding: EdgeInsets.fromLTRB(20, 50, 20, 80),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          Container(
+            padding: EdgeInsets.all(30),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                addAmount(),
+                selectGroup(),
+                selectType(),
+                addMemo(),
+                // addProof(),
+              ],
             ),
           ),
-        )
-      ],
+          ElevatedButton(
+            onPressed: () async {
+              WidgetsFlutterBinding.ensureInitialized();
+              final cameras = await availableCameras();
+              final firstCamera = cameras.first;
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => TakePicture(
+                    camera: firstCamera,
+                    memo: memo,
+                    amount: amount,
+                    group: selectedGroup,
+                  ),
+                ),
+              );
+            },
+            child: Text(
+              "Add Proof",
+              style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                    fontWeight: FontWeight.bold,
+                    color: Theme.of(context).backgroundColor,
+                  ),
+            ),
+            style: ElevatedButton.styleFrom(
+              elevation: 5,
+              padding: EdgeInsets.fromLTRB(30, 20, 30, 20),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20),
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

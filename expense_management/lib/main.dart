@@ -8,7 +8,7 @@ void main() {
       home: LoginPage(),
       theme: AppTheme.light,
       darkTheme: AppTheme.dark,
-      themeMode: ThemeMode.system,
+      themeMode: ThemeMode.light,
       debugShowCheckedModeBanner: false,
     ),
   );
