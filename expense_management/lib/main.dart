@@ -15,7 +15,6 @@ void main() {
       var f = NotificationService();
       await f.init();
       var b = jsonDecode(event);
-
       print(b["subtitle"]);
       f.showNotification(b["title"] ?? 'Null', b["subtitle"] ?? 'Null');
     });
@@ -28,7 +27,7 @@ void main() {
       home: LoginPage(),
       theme: AppTheme.light,
       darkTheme: AppTheme.dark,
-      themeMode: ThemeMode.light,
+      themeMode: ThemeMode.system,
       debugShowCheckedModeBanner: false,
     ),
   );
